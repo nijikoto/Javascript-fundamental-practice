@@ -274,3 +274,167 @@ restaurant.orderDelivery({
   starterIndex: 2,
 });
 ```
+
+105. spread operator 展開運算符
+
+### 功能: 展開 array 的值
+
+- 沒有使用 spread operator 的情況
+
+```javascript
+const arr = [7, 8, 9];
+
+const badNewArr = [1, 2, arr[0], arr[1], arr[2]];
+
+console.log(badNewArr); //(5) [1, 2, 7, 8, 9]
+```
+
+- 使用 spread operator
+
+```javascript
+const newArr = [1, 2, ...arr];
+
+console.log(newArr); //(5) [1, 2, 7, 8, 9]
+```
+
+→ 藉由 spread operator 提取 arr 的值並「獨立」寫入
+
+- 使用 spread operator`...`便不用透過, 去列出所有的 value
+
+- 若沒有使用 spread operator 直接將 arr 置於 newArr 的情況
+
+```javascript
+const newArr = [1, 2, arr];
+
+console.log(newArr);
+```
+
+![](https://i.imgur.com/oHP4aOB.png)
+
+- 比較
+
+```javascript
+const newArr = [1, 2, ...arr];
+
+console.log(newArr); //(5) [1, 2, 7, 8, 9]
+
+console.log(...newArr); //1 2 7 8 9
+```
+
+→ 當需要將值「獨立」印出時就適合使用 spread arguments
+
+#### 應用(1)：更新 array 的資料內容
+
+- 追加新菜單的應用: 在菜單上加入珍奶 🧋
+
+```javascript
+const newMenu = [...restaurant.mainMenu, "tapioca milk tea"];
+
+console.log(newMenu); //(4) ['Pizza', 'Pasta', 'Risotto', 'tapioca milk tea']
+
+//copy array
+
+const mainMenuCopy = [...restaurant.mainMenu];
+
+//join 2 arrays: both main menu and starter menu
+
+const menu = [...restaurant.starterMenu, ...restaurant.mainMenu];
+
+console.log(menu); //(7) ['Focaccia', 'Bruschetta', 'Garlic Bread', 'Caprese Salad', 'Pizza', 'Pasta', 'Risotto']
+```
+
+- 追加菜單
+- 複製菜單
+- 合併菜單
+
+#### 應用(2): 將 arguments 傳入 function 並印出
+
+- 在先前的餐廳物件裡建立一個 method 可以選擇指定的材料來做義大利麵
+
+```javascript
+orderPasta: function (ingredient1, ingredient2, ingredient3) {
+
+console.log(
+
+`Here is your delicious pasta with ${ingredient1}, ${ingredient2}, ${ingredient3}.`
+
+);
+
+},
+```
+
+- 宣告義大利麵的材料，使用 prompt 從視窗輸入材料
+
+```javascript
+const ingredients = [
+
+prompt('Let's make pasta! Ingredient1?),
+
+prompt('Ingredient2?'),
+
+prompt('Ingredient3?'),
+
+
+];
+
+
+console.log(ingredients);
+
+restaurant.orderPasta(...ingredients);
+```
+
+→ 可以從 orderPasta 印出輸入的材料的義大利麵：Here is your delicious pasta with mushrooms, tomatoes, cheese.
+
+#### 應用(3) 追加新的 objects 資料
+
+- 建立一個新的餐廳 object，含有原始的餐廳 object 的資料，並且還有追加的資料
+
+```javascript
+const newRestaurant = {
+  foundedIn: 1991,
+
+  ...restaurant,
+
+  founder: "Sakamoto Ryuichi",
+}; //copy the data from the old object and add new values
+
+console.log(newRestaurant);
+```
+
+![](https://i.imgur.com/vPLN3Xb.png)
+
+→ 得到「舊餐廳」的資料並更新到「新餐廳」的資料
+
+- copy
+
+```javascript
+const copyRestaurant = { ...restaurant };
+
+copyRestaurant.name = "Lawrence";
+
+console.log(copyRestaurant.name); //Lawrence
+
+console.log(restaurant.name); //Italiano
+```
+
+→ 印出的結果複製的餐廳名與原始的餐廳名不同
+
+### Iterables
+
+- Iterables: arrays, string, maps, sets. NOT object
+
+```javascript
+//Iterables:arrays, strings, maps, sets.NOT objects
+
+const str = "Irene";
+
+const letters = [...str, "", "s."];
+
+console.log(letters); //(7) ['I', 'r', 'e', 'n', 'e', '', 's.']
+
+console.log(...str); //I r e n e
+```
+
+### 延伸閱讀資料
+
+1. [認識 JavaScript Iterable 和 Iterator](https://jiepeng.me/2018/04/19/iterable-and-iterator-in-javascript)

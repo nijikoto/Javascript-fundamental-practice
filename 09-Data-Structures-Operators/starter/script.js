@@ -43,6 +43,12 @@ const restaurant = {
       `Order received! ${this.starterMenu[starterIndex]} and ${this.mainMenu[mainIndex]} will be delivered to ${address} at ${time}`
     );
   },
+
+  orderPasta: function (ingredient1, ingredient2, ingredient3) {
+    console.log(
+      `Here is your delicious pasta with ${ingredient1}, ${ingredient2}, ${ingredient3}.`
+    );
+  },
 };
 
 restaurant.orderDelivery({
@@ -52,37 +58,37 @@ restaurant.orderDelivery({
   starterIndex: 2,
 });
 
-// create 3 brand new variables based on the objects
-const { name, openingHours, categories } = restaurant;
-console.log(name, openingHours, categories);
-// extremely useful when dealing with the result of an API call
+// // create 3 brand new variables based on the objects
+// const { name, openingHours, categories } = restaurant;
+// console.log(name, openingHours, categories);
+// // extremely useful when dealing with the result of an API call
 
 // giving new variable name
-const {
-  name: restaurantName,
-  openingHours: hours,
-  categories: tags,
-} = restaurant;
-console.log(restaurantName, hours, tags);
+// const {
+//   name: restaurantName,
+//   openingHours: hours,
+//   categories: tags,
+// } = restaurant;
+// console.log(restaurantName, hours, tags);
 
 // Default values
-const { menu = [], starterMenu: starters = [] } = restaurant;
-console.log(menu, starters); //[], (4) ['Focaccia', 'Bruschetta', 'Garlic Bread', 'Caprese Salad']
+// const { menu = [], starterMenu: starters = [] } = restaurant;
+// console.log(menu, starters); //[], (4) ['Focaccia', 'Bruschetta', 'Garlic Bread', 'Caprese Salad']
 
 //Mutating Variables
-let a = 111;
-let b = 999;
+// let a = 111;
+// let b = 999;
 //store the variable into a variable
-const obj = { a: 23, b: 7, c: 14 };
-({ a, b } = obj);
-console.log(a, b);
+// const obj = { a: 23, b: 7, c: 14 };
+// ({ a, b } = obj);
+// console.log(a, b);
 
 // Nested objects
 // object inside an object
-const {
-  fri: { open: o, close: c },
-} = openingHours;
-console.log(o, c);
+// const {
+//   fri: { open: o, close: c },
+// } = openingHours;
+// console.log(o, c);
 
 // const arr = [2, 3, 4];
 // const a = arr[0];
@@ -125,3 +131,57 @@ console.log(o, c);
 // // after:
 // const [p = 1, q = 1, r = 1] = [8, 9];
 // console.log(p, q, r); //8 9 1
+
+// the spread operator
+// create new array based on this array w/ some new elements at the beginning
+
+const arr = [7, 8, 9];
+const badNewArr = [1, 2, arr[0], arr[1], arr[2]];
+console.log(badNewArr);
+
+const newArr = [1, 2, ...arr];
+console.log(newArr);
+console.log(...newArr);
+// take all the values out and write them individually
+
+//追加新菜單的應用: 在菜單上加入
+const newMenu = [...restaurant.mainMenu, 'tapioca milk tea'];
+console.log(newMenu); //(4) ['Pizza', 'Pasta', 'Risotto', 'tapioca milk tea']
+
+//copy array
+const mainMenuCopy = [...restaurant.mainMenu];
+
+//join 2 arrays: both main menu and starter menu
+const menu = [...restaurant.starterMenu, ...restaurant.mainMenu];
+console.log(menu); //(7) ['Focaccia', 'Bruschetta', 'Garlic Bread', 'Caprese Salad', 'Pizza', 'Pasta', 'Risotto']
+
+//Iterables:arrays, strings, maps, sets.NOT objects
+const str = 'Irene';
+const letters = [...str, '', 's.'];
+console.log(letters);
+console.log(...str);
+// console.log(`${...str} Schmedtmann`); // this is not the place that expects multiple values separated by a comma.
+// multiple values separated by a comma is only when we pass arguments into a function
+
+const ingredients = [
+  // prompt("Let's make pasta! Ingredient1?"),
+  // prompt('Ingredient2?'),
+  // prompt('Ingredient3?'),
+];
+
+console.log(ingredients);
+
+restaurant.orderPasta(ingredients);
+
+// objects
+const newRestaurant = {
+  foundedIn: 1991,
+  ...restaurant,
+  founder: 'Sakamoto Ryuichi',
+}; //copy the data from the old object and add new values
+console.log(newRestaurant);
+
+const copyRestaurant = { ...restaurant };
+copyRestaurant.name = 'Lawrence';
+console.log(copyRestaurant.name); //Lawrence
+console.log(restaurant.name); //Italiano
