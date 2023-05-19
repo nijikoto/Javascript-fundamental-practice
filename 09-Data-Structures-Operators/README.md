@@ -275,7 +275,7 @@ restaurant.orderDelivery({
 });
 ```
 
-105. spread operator 展開運算符
+## 105. spread operator 展開運算符
 
 ### 功能: 展開 array 的值
 
