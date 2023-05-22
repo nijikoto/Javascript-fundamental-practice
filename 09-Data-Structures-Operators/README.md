@@ -438,3 +438,204 @@ console.log(...str); //I r e n e
 ### 延伸閱讀資料
 
 1. [認識 JavaScript Iterable 和 Iterator](https://jiepeng.me/2018/04/19/iterable-and-iterator-in-javascript)
+
+## 106. Rest Pattern and Parameters 其餘運算符、其餘參數
+
+- Rest: to pact elements into an array
+  > The rest parameter syntax allows a function to accept an indefinite number of arguments as an array, providing a way to represent variadic functions (可變參數函數) in JavaScript. (MDN)
+
+其餘參數允許 function 接收不定量的 arguments 作為 array
+
+```javascript
+const arr = [1, 2, ...[3, 4]]; // spread syntax, because on RIGHT side of operator
+
+const [a, b, ...others] = [1, 2, 3, 4, 5]; //rest syntax, because on teh LEFT side of operator
+
+console.log(a, b, others); //1 2 (3) [3, 4, 5] it will take the rest of the elements and put them into a new array"others"
+
+const [pizza, , risotto, ...otherFood] = [
+  ...restaurant.mainMenu,
+
+  ...restaurant.starterMenu,
+];
+
+console.log(pizza, risotto, otherFood); //Pizza Risotto (4) ['Focaccia', 'Bruschetta', 'Garlic Bread', 'Caprese Salad']
+
+// collect all the elements that didn't select previously
+
+// collet all the array after the LAST variable DOES NOT include any skipped elements
+```
+
+- 可同時使用 rest 和 spread
+- 使用 rest 時蒐集的是在最後一個變數之後，不包含跳過的元素
+
+### objects
+
+- select only Sat, others go to the weekdays
+
+```javascript
+// select only Sat, others go to the weekdays
+const { sat, ...weekdays } = restaurant.openingHours;
+
+console.log(weekdays);
+```
+
+### Functions
+
+```javascript
+const add = function (...numbers) {
+  let sum = 0;
+
+  for (let i = 0; i < numbers.length; i++) sum += numbers[i];
+
+  console.log(sum);
+};
+
+add(2, 3); //5
+
+add(5, 3, 7, 2); //17
+
+add(8, 2, 5, 3, 2, 1, 4); //25
+
+const x = [23, 5, 7];
+
+add(...x); // pack them back again
+```
+
+### 應用例：點 pizza
+
+```javascript
+orderPizza: function (mainIngredient, ...otherIngredients) {
+
+console.log(mainIngredient); //mushrooms
+
+console.log(otherIngredients); //(3) ['onion', 'olives', 'spinach']
+
+restaurant.orderPizza('mushrooms', 'onion', 'olives', 'spinach');
+
+},
+
+```
+
+### Recap
+
+- spread operator 和 rest pattern 看起來相似，但功能相反。
+- spread operators used where we would write<mark style="background: #BBFABBA6;"> values</mark> separated by comma
+- rest pattern is basically used writes <mark style="background: #BBFABBA6;">variable names</mark> separated by comma
+- 展開運算子通常用於將陣列或物件展開成獨立的值，而剩餘模式則用於在函式定義中接收不定數量的參數並將它們收集到一個陣列中。
+
+## 107. Short circuiting (&& and || ) 短路求值
+
+- 「short circuiting」是指在邏輯運算中的一種行為，當運算符能夠確定整個表達式的結果而不需要評估所有的運算元時，它會停止進一步的評估。
+- AND (`&&`) 短路求值： 當使用 `&&` 運算符時，如果第一個運算元為 `false`，則整個表達式將被判定為 `false`，且不再評估後面的運算元。
+- OR (`||`) 短路求值： 當使用 `||` 運算符時，如果第一個運算元為 `true`，則整個表達式將被判定為 `true`，且不再評估後面的運算元。
+- 這種短路求值僅適用於布林值的運算，並且運算結果是布林值。在使用其他類型的運算元時，則不會進行短路評估。
+- 短路求值的行為可以用於實現一些常見的程式模式，例如在處理可選參數時，避免對不存在的值進行操作，或者在設定預設值時使用簡潔的邏輯判斷。
+
+### || OR
+
+```javascript
+console.log(3 || 'Jonas'); //3
+
+console.log(''|| 'Jonas');//jonas
+
+console.log(true || 0); //true
+
+console.log(undefined || null); // undefined is falsy value so the result would be null
+
+
+console.log(undefined || 0 || '' 'Hello' || 23 || null); //hello : the first truthy value
+```
+
+#### 餐廳客人的的例子
+
+##### 不使用 short circuiting
+
+- 若無定義 numGuests
+
+```javascript
+const guest1 = restaurant.numGuests ? restaurant.numGuests : 10;
+
+// check if if customer exists, if yes then return the number of guests or return the default value 10
+
+console.log(guest1); //10, restaurant.numGuests is undefined
+```
+
+- 若有定義 numGuests
+
+```javascript
+restaurant.numGuests = 23;
+const guest1 = restaurant.numGuests ? restaurant.numGuests : 10;
+console.log(guest1); //23
+```
+
+##### 使用 short circuiting
+
+```javascript
+restaurant.numGuests = 23;
+const guest2 = restaurant.numGuests || 10;
+
+console.log(guest2); //23
+```
+
+🚨 注意：當 numGuests 的值為 0，不適用，因為 0 是 FALSY values，所以會印出預設值
+
+### && AND
+
+```javascript
+console.log(0 && "Jonas"); //0
+
+console.log(7 && "Jonas"); //Jonas
+
+// false anyway no need to look at others
+
+console.log("Hello" && 23 && null && "jonas"); // null
+
+// return the first falsy value
+```
+
+#### 確認 method 是否存在
+
+##### 不使用 short circuiting
+
+```javascript
+// to check if certain value is exist or not
+
+// check if method exist or not, if exist then execute
+
+if (restaurant.orderPizza) {
+  restaurant.orderPizza("mushrooms", "spinach");
+}
+```
+
+##### 使用 short circuiting
+
+```javascript
+restaurant.orderPizza && restaurant.orderPizza("mushrooms", "spinach");
+```
+
+🚨 注意：不要將所有的 if statement 轉換為 short circuiting 的寫法，因為可讀性會降低
+
+### Recap
+
+- OR operator will return the FIRST TRUTHY value of all the operands or the last value if all of them are falsy (OR return 第一個 truthy 值 或是最後一個值如果都是 false)
+- AND operator will return the FIRST FALSY value of all the operands or the last value if all of them are truthy (AND return 第一個 falsy 或是 最後一個值如果都是 true)
+- 實際的應用 OR operator 可以用在設定 default value，而 AND operator 可以用於執行第二個運算數
+
+## 108. The nullish coalescing operator(??)
+
+- introduce in ES2020
+- Nullish: null and undefined (NOT 0 or ' ')
+- Nullish Coalescing 運算子來判斷變數的值是否為 `null` 或 `undefined`。如果變數的值為 `null` 或 `undefined`，則返回指定的預設值；否則返回變數的值本身。
+- Nullish Coalescing 運算子只在變數的值為 `null` 或 `undefined` 時才會返回預設值。如果變數的值是其他 falsy 值（如空字串 `''` 或數值 `0`），則不會返回預設值。
+
+### 若來客數為 0 的例子
+
+```javascript
+restaurant.numGuests = 0;
+const guestCorrect = restaurant.numGuests ?? 10;
+console.log(guestCorrect);
+console.log(guest1); //0
+```
+
+→ 上一節在｜｜不能設定為 0，但透過 The nullish coalescing 可以解決｜｜不能取得正確值的問題
