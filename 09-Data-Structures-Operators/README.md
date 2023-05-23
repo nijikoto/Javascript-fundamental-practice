@@ -639,3 +639,352 @@ console.log(guest1); //0
 ```
 
 → 上一節在｜｜不能設定為 0，但透過 The nullish coalescing 可以解決｜｜不能取得正確值的問題
+
+## 109. Logical Assignment Operator
+
+- Logical OR Assignment (`||=`) 運算子： `||=` 運算子用於將右邊的值賦值給左邊的變數，但僅當左邊的變數為 falsy 值（如 `null`、`undefined`、`false`、空字串等）時才執行賦值操作。如果左邊的變數已經是一個 truthy 值，則不執行賦值操作。
+
+```javascript
+let x = 10;
+x ||= 5; // 等同於 x = x || 5;
+console.log(x); // 輸出: 10
+
+let y = 0;
+y ||= 7; // 等同於 y = y || 7;
+console.log(y); // 輸出: 7
+```
+
+- Logical AND Assignment (`&&=`) 運算子： `&&=` 運算子用於將右邊的值賦值給左邊的變數，但僅當左邊的變數為 truthy 值時才執行賦值操作。如果左邊的變數已經是一個 falsy 值（如 `null`、`undefined`、`false`、空字串等），則不執行賦值操作。
+
+```javascript
+let a = 10;
+a &&= 3; // 等同於 a = a && 3;
+console.log(a); // 輸出: 3
+
+let b = "";
+b &&= "hello"; // 等同於 b = b && 'hello';
+console.log(b); // 輸出: ''
+```
+
+```javascript
+const restaurant1 = {
+  name: "Cali",
+
+  numGuests: 20,
+};
+
+const restaurant2 = {
+  name: "La piazza",
+
+  owner: "Giovanni Rossi",
+};
+
+// restaurant1.numGuests = restaurant1.numGuests || 10;
+
+// restaurant2.numGuests = restaurant2.numGuests || 10;
+
+restaurant1.numGuests ||= 10;
+
+restaurant2.numGuests ||= 10; //variable is falsy, so will be assigned to 10
+
+console.log(restaurant1); //20
+
+console.log(restaurant2); //10
+```
+
+### 若為０的情況
+
+```javascript
+restaurant.numGuests = 0;
+const guest2 = restaurant.numGuests || 10; //10
+```
+
+→ 並不符合實際的來客數
+
+- 解決方法：
+
+```javascript
+const restaurant1 = {
+  name: "Cali",
+
+  // numGuests: 20,
+
+  numGuests: 0,
+};
+
+const restaurant2 = {
+  name: "La piazza",
+
+  owner: "Giovanni Rossi",
+};
+
+restaurant1.numGuests ??= 10;
+
+restaurant2.numGuests ??= 10;
+
+console.log(restaurant1); // 0
+
+console.log(restaurant2); //10
+```
+
+### Recap
+
+- assign a value that is defined and has a value that is currently truthy you can use assignment assignment operator
+
+## 111. Looping Arrays: The for of Loop
+
+- 遍歷一個陣列並對其中的每個元素進行操作時，可以使用 for...of 迴圈。for...of 迴圈是 ES6 引入的一種迴圈語法，用於遍歷可迭代物件（如陣列、字串等）的元素。
+
+### 例子
+
+```javascript
+//for of loop
+
+const menu = [...restaurant.starterMenu, ...restaurant.mainMenu];
+
+for (const item of menu) console.log(item);
+```
+
+- for of loop 可以用 continue 和 break
+
+### entries
+
+`entries()` 是 JavaScript 陣列的一個內建方法，它返回一個<mark style="background: #FFB8EBA6;">包含陣列每個元素的索引/值</mark>對的可迭代物件。這個可迭代物件可以被用於遍歷陣列的索引和對應的值。
+
+```javascript
+for (const item of menu.entries()) {
+  console.log(item);
+}
+```
+
+![](https://i.imgur.com/xSckTBh.png)
+
+### 結合 template literal
+
+```javascript
+for (const item of menu.entries()) {
+  console.log(`${item[0] + 1}:${item[1]}`);
+}
+```
+
+![](https://i.imgur.com/IZ8P211.png)
+
+- 更好的寫法：使用解構賦值的方法
+
+```javascript
+for (const [i, el] of menu.entries()) {
+  console.log(`${i + 1}:${el}`);
+}
+```
+
+### 其他補充
+
+可迭代物件：
+
+## 112 Enhanced Object Literals
+
+### 1. 簡化的屬性初始化
+
+- 簡化的屬性初始化：在 ES6 中，當屬性名稱和變數名稱相同時，可以只寫屬性名稱而省略冒號和值的指定。
+- 當 object 在 object 之外，在 object(restaurant) 內引入 object
+- before:
+
+```javascript
+openingHousr:openingHours,
+```
+
+- after:
+
+```javascript
+//ES6 enhanced object literals
+
+openingHours,
+```
+
+### 2. 方法的簡寫語法
+
+- 可以省略冒號和 `function` 關鍵字
+- before
+
+```javascript
+order: function (starterIndex, mainIndex) {
+
+return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]];
+
+},
+```
+
+- after:去掉 function()
+
+```javascript
+order(starterIndex, mainIndex) {
+
+return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]];
+
+},
+```
+
+### 3.可計算的屬性名稱
+
+- 可計算的屬性名稱：ES6 允許在物件字面量中使用方括號 `[]` 來定義屬性名稱，並使用表達式作為屬性名稱的值。
+- 不需手動書寫，自動‘計算’
+
+```javascript
+const weekdays = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
+
+const openingHours = {
+  [weekdays[3]]: {
+    open: 12,
+
+    close: 22,
+  },
+
+  [weekdays[4]]: {
+    open: 11,
+
+    close: 23,
+  },
+
+  [`day-${2 + 4}`]: {
+    open: 0, // Open 24 hours
+
+    close: 24,
+  },
+};
+```
+
+### 補充：4. 範圍內的 super
+
+- 在 ES6 的物件字面量方法中，可以使用 `super` 關鍵字來引用父類物件的屬性和方法。這樣可以更方便地進行物件之間的繼承和覆寫。
+
+```javascript
+const parent = {
+  name: "Parent",
+  sayHello() {
+    console.log(`Hello, ${this.name}!`);
+  },
+};
+
+const child = {
+  name: "Child",
+  sayHello() {
+    super.sayHello();
+    console.log("How are you?");
+  },
+};
+
+Object.setPrototypeOf(child, parent);
+
+child.sayHello();
+// 輸出:
+// Hello, Child!
+// How are you?
+```
+
+## 113. Optional Chaining(?.)
+
+Optional Chaining 是一個 JavaScript 的語言特性，它允許你在存取物件的屬性或呼叫方法時，安全地處理可能為 undefined 或 null 的中間屬性，而不會拋出錯誤。
+
+在舊的 JavaScript 中，當你嘗試存取一個深層的物件屬性時，如果中間的屬性為 undefined 或 null，那麼試圖存取後面的屬性就會拋出 TypeError 錯誤。
+
+使用 Optional Chaining，可確保安全存取屬性或呼叫方法。如果中間的屬性為 undefined 或 null，表達式的結果將是 undefined，而不會拋出錯誤。
+
+Optional Chaining 也可以與其他 JavaScript 的語言特性一起使用，例如結合 nullish coalescing operator（`??`）來提供預設值。這樣可以在屬性值為 undefined 或 null 時，使用預設值作為結果。
+
+### 範例
+
+```javascript
+const user = {
+  name: "Alice",
+  address: {
+    city: "New York",
+    street: "123 ABC Street",
+  },
+};
+
+// 沒有使用 Optional Chaining，可能拋出錯誤
+const street = user.address.street; // 如果 address 為 undefined，拋出 TypeError
+
+// 使用 Optional Chaining，安全地存取屬性
+const street = user?.address?.street; // 如果 address 或 street 為 undefined，結果為 undefined
+
+console.log(street); // '123 ABC Street' 或 undefined
+```
+
+### 餐廳的例子
+
+- 未使用 optional chaining
+
+```javascript
+if (restaurant.openingHours && restaurant.openingHours.mon)
+  console.log(restaurant.openingHours.mon.open);
+```
+
+    - 當openingHours object 存在以及 openingHour.mon 存在，才印出。
+    - 現實生活中很常會遇到 optional properties，特別是在巢狀的結構
+
+- 使用 optional chaining
+
+```javascript
+//WITH optional chaining
+
+console.log(restaurant.openingHours.mon?.open); //undefined
+
+console.log(restaurant.openingHours?.mon?.open); //undefined
+
+// only if monday exists then the open property will be read, if not 'undefined' will be immediately return
+```
+
+- 唯有 monday 存在，open property 才會被讀取，若不存在則立即返回'undefined'
+- optional chaining 可以連續使用
+
+### 營業時間應用例
+
+```javascript
+//EXAMPLE:LOOP over the arrays and log the console whether the restaurant is open or closed
+
+const days = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
+
+for (const day of days) {
+  const open = restaurant.openingHours[day]?.open ?? "closed";
+
+  console.log(`on ${day}, we open at ${open}`);
+}
+```
+
+![](https://i.imgur.com/PSqVhZM.png)
+
+- 當使用 variable 作為 property 使用時，記得用[]
+- 選用`??` 來顯示，週六的時間，因為 0 為 falsy value，若選用`||`則結果為 closed
+
+### Method 的應用
+
+確認 method 是否存在
+
+```javascript
+// Methods: checking if method exist or not
+
+console.log(restaurant.order?.(0, 1) ?? "Method does not exist");
+
+console.log(restaurant.orderRissotto?.(0, 1) ?? "Method does not exist"); //Method does not exist
+```
+
+### Array 的應用
+
+確認 array 是否為空
+
+```javascript
+//Arrays: checking if an array is empty
+
+const users = [{ name: "jonas", email: "jonas@gmail.com" }];
+
+console.log(users[0]?.name ?? "Users array empty"); //jonas
+```
+
+```javascript
+const users = [];
+
+console.log(users[0]?.name ?? "Users array empty"); //Users array empty
+```
+
+- Optional Chaining(?.) 經常與 nullish coalescing operator(??) 一起用
