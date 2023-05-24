@@ -988,3 +988,139 @@ console.log(users[0]?.name ?? "Users array empty"); //Users array empty
 ```
 
 - Optional Chaining(?.) 經常與 nullish coalescing operator(??) 一起用
+
+## 114. Looping Objects: Objects Keys, Values, and Entries
+
+- not only loop for variable but also loop for object in a indirect way
+- property name also called key
+- loop over an array
+
+#### Objects Keys
+
+`Object.keys()` 是 JavaScript 中的內建函式，它用於獲取一個物件的所有可枚舉屬性的鍵（屬性名稱）組成的陣列。
+
+- syntax:
+
+```javascript
+Object.keys(obj);
+```
+
+- 範例：
+
+```javascript
+const person = {
+  name: "Alice",
+  age: 30,
+  city: "New York",
+};
+
+const keys = Object.keys(person);
+console.log(keys); // ['name', 'age', 'city']
+```
+
+#### 應用例：
+
+```javascript
+// Properties Name
+
+const properties = Object.keys(openingHours);
+
+console.log(properties); //) ['thu', 'fri', 'sat']
+
+let openStr = `We are open on ${properties.length} days:`;
+
+for (const day of properties) {
+  openStr += `${day},`;
+}
+
+console.log(openStr); //We are open on 3 days:thu,fri,sat,
+```
+
+### Object.values
+
+`Object.values()` 是 JavaScript 中的內建函式，它用於獲取一個物件的所有可枚舉屬性的值組成的陣列。
+
+#### 範例
+
+```javascript
+const person = {
+  name: "Alice",
+  age: 30,
+  city: "New York",
+};
+
+const values = Object.values(person);
+console.log(values); // ['Alice', 30, 'New York']
+```
+
+#### 應用例：結合 entries 的應用、解構賦值的應用去 loop 整個 object
+
+```javascript
+// Loop Entire object
+
+const entries = Object.entries(openingHours);
+
+// console.log(entries);
+
+for (const [key, { open, close }] of entries) {
+  console.log(`On ${key} we open at ${open} and close at ${close}`);
+}
+```
+
+![](https://i.imgur.com/0eJYWY9.png)
+
+- entries = name + values
+- open and close: value itself is also an object
+- 說明：
+
+1.  `Object.entries(openingHours)`：此行程式碼將 `openingHours` 物件轉換為鍵值對（key-value pairs）組成的陣列。每個鍵值對是一個子陣列，包含一個鍵和對應的值。這些子陣列會被儲存在 `entries` 變數中。
+2.  `for...of` 迴圈：使用 `for...of` 迴圈來迭代 `entries` 陣列中的每個鍵值對。
+3.  解構賦值：在每次迴圈迭代中，使用解構賦值來從當前鍵值對的子陣列中提取鍵和值。`{ key, { open, close } }` 表示要從子陣列中解構出鍵存儲在 `key` 變數中，並解構出對應值物件的 `open` 和 `close` 屬性的值。
+4.  `console.log()`：訊息顯示了該日期（存儲在 `key` 中）的營業時間。
+
+## 116. Sets
+
+- Set 是一種內建的資料結構，用於存儲唯一值的集合。Set 中的值是無序且不重複的，這意味著它可以用來快速檢查某個值是否已存在於集合中。
+- 可以有不同的 data type
+
+#### 範例：
+
+```javascript
+console.log(orderSet);
+
+console.log(new Set("Jonas"));
+
+console.log(orderSet.size);
+
+console.log(orderSet.has("Pizza")); //true
+
+console.log(orderSet.has("Bread")); //false
+
+orderSet.add("Garlic Bread");
+
+orderSet.add("Garlic Bread"); // the set has to be unique therefore it only appeared once
+
+orderSet.delete("Risotto");
+
+console.log(orderSet);
+```
+
+若需要取得內部(retrieve)data 直接用 array 即可，不會用到 sets
+
+#### for of loop 的範例
+
+```javascript
+//main use case: to remove duplicate values of array
+
+const staff = ["Waiter", "Chef", "Manager", "Chef", "Waiter"];
+
+const staffUnique = [...new Set(staff)]; // make it an array
+
+console.log(staffUnique);
+
+console.log(new Set(["Waiter", "Chef", "Manager", "Chef", "Waiter"]).size);
+
+console.log(new Set("jonassahhemman").size);
+```
+
+- 主要用於移除重複的 array values

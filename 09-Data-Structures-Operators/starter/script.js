@@ -56,75 +56,144 @@ const restaurant = {
   },
 };
 
-// checking just for one property
-if (restaurant.openingHours && restaurant.openingHours.mon)
-  console.log(restaurant.openingHours.mon.open);
+const rest = new Map();
+rest.set('name', 'Calssico Italiano');
+rest.set(1, 'Firenze, Italy');
+console.log(rest.set(2, 'Libsion, Portugal'));
 
-//WITH optional chaining
-console.log(restaurant.openingHours.mon?.open); //undefined
-console.log(restaurant.openingHours?.mon?.open); //undefined
+rest
+  .set('categories', ['Italian', 'Pizzeria', 'Vegetarian', 'Organic'])
+  .set('open', 11)
+  .set('close', 23)
+  .set(true, 'We are open :-)')
+  .set(false, 'we are closed:(');
 
-//EXAMPLE:LOOP over the arrays and log the console whether the restaurant is open or closed
-const days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
-for (const day of days) {
-  const open = restaurant.openingHours[day]?.open ?? 'closed';
-  console.log(`on ${day}, we open at ${open}`);
-}
+// not only call but also return
 
-// Methods: checking if method exist or not
-console.log(restaurant.order?.(0, 1) ?? 'Method does not exist');
-console.log(restaurant.orderRissotto?.(0, 1) ?? 'Method does not exist'); //Method does not exist
+//sets
+// const orderSet = new Set([
+//   'Pasta',
+//   'Pizza',
+//   'Pizza',
+//   'Risotto',
+//   'Pasta',
+//   'Pizza',
+// ]);
+// console.log(orderSet);
+// console.log(new Set('Jonas'));
 
-//Arrays: checking if an array is empty
-// const users = [{ name: 'jonas', email: 'jonas@gmail.com' }];
-const users = [];
-console.log(users[0]?.name ?? 'Users array empty'); //jonas
-//use variable name as property name  remember to use[]
-// day is dynamic
+// console.log(orderSet.size);
 
-// if (restaurant.openingHours.fri) console.log(restaurant.openingHours.fri);
-// console.log(restaurant);
+// console.log(orderSet.has('Pizza')); //true
+// console.log(orderSet.has('Bread')); //false
+// orderSet.add('Garlic Bread');
+// orderSet.add('Garlic Bread'); // the set has to be unique therefore it only appeared once
+// orderSet.delete('Risotto');
+// // orderSet.clear();
+// console.log(orderSet);
 
-// //for of loop
-// const menu = [...restaurant.starterMenu, ...restaurant.mainMenu];
-// // for (const item of menu) console.log(item);
+// for (const order of orderSet) console.log(order);
 
-// for (const [i, el] of menu.entries()) {
-//   console.log(`${i + 1}:${el}`);
+// //main use case: to remove duplicate values of array
+// const staff = ['Waiter', 'Chef', 'Manager', 'Chef', 'Waiter'];
+// const staffUnique = [...new Set(staff)]; // make it an array
+// console.log(staffUnique);
+// console.log(new Set(['Waiter', 'Chef', 'Manager', 'Chef', 'Waiter']).size);
+// console.log(new Set('jonassahhemman').size);
+// //get the size of the set
+
+// // Properties Name
+// const properties = Object.keys(openingHours);
+// console.log(properties); //) ['thu', 'fri', 'sat']
+
+// let openStr = `We are open on ${properties.length} days:`;
+// for (const day of properties) {
+//   openStr += `${day},`;
 // }
+// console.log(openStr); //We are open on 3 days:thu,fri,sat,
 
-// console.log([...menu.entries()]);
-// const restaurant1 = {
-//   name: 'Cali',
-//   // numGuests: 20,
-//   numGuests: 0,
-// };
+// // Properties Values
+// const values = Object.values(openingHours);
+// console.log(values);
 
-// const restaurant2 = {
-//   name: 'La piazza',
-//   owner: 'Giovanni Rossi',
-// };
+// // Loop Entire object
+// const entries = Object.entries(openingHours);
+// // console.log(entries);
 
-// OR assignment operator
-// //→ assign to a variable if the variable is currently falsy
-// // 1. set default number of guests for all the restaurant objects that do not have the property
-// // restaurant1.numGuests = restaurant1.numGuests || 10;
-// // restaurant2.numGuests = restaurant2.numGuests || 10;
+// for (const [key, { open, close }] of entries) {
+//   console.log(`On ${key} we open at ${open} and close at ${close}`);
+// }
+// //entries = name + values
 
-// // restaurant1.numGuests ||= 10;
-// // restaurant2.numGuests ||= 10; //variable is falsy, so will be assigned to 10
-// restaurant1.numGuests ??= 10;
-// restaurant2.numGuests ??= 10;
+// // // checking just for one property
+// // if (restaurant.openingHours && restaurant.openingHours.mon)
+// //   console.log(restaurant.openingHours.mon.open);
 
-// // restaurant2.owner = restaurant2.owner && '<ANONYMOUS>';
+// // //WITH optional chaining
+// // console.log(restaurant.openingHours.mon?.open); //undefined
+// // console.log(restaurant.openingHours?.mon?.open); //undefined
 
-// restaurant1.owner &&= '<ANONYMOUS>';
-// restaurant2.owner &&= '<ANONYMOUS>';
+// // //EXAMPLE:LOOP over the arrays and log the console whether the restaurant is open or closed
+// // const days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+// // for (const day of days) {
+// //   const open = restaurant.openingHours[day]?.open ?? 'closed';
+// //   console.log(`on ${day}, we open at ${open}`);
+// // }
 
-// console.log(restaurant1); // 0
-// console.log(restaurant2); //10
+// // Methods: checking if method exist or not
+// // console.log(restaurant.order?.(0, 1) ?? 'Method does not exist');
+// // console.log(restaurant.orderRissotto?.(0, 1) ?? 'Method does not exist'); //Method does not exist
 
-// //use non booleans as operands
+// // //Arrays: checking if an array is empty
+// // // const users = [{ name: 'jonas', email: 'jonas@gmail.com' }];
+// // const users = [];
+// // console.log(users[0]?.name ?? 'Users array empty'); //jonas
+// //use variable name as property name  remember to use[]
+// // day is dynamic
+
+// // if (restaurant.openingHours.fri) console.log(restaurant.openingHours.fri);
+// // console.log(restaurant);
+
+// // //for of loop
+// // const menu = [...restaurant.starterMenu, ...restaurant.mainMenu];
+// // // for (const item of menu) console.log(item);
+
+// // for (const [i, el] of menu.entries()) {
+// //   console.log(`${i + 1}:${el}`);
+// // }
+
+// // console.log([...menu.entries()]);
+// // const restaurant1 = {
+// //   name: 'Cali',
+// //   // numGuests: 20,
+// //   numGuests: 0,
+// // };
+
+// // const restaurant2 = {
+// //   name: 'La piazza',
+// //   owner: 'Giovanni Rossi',
+// // };
+
+// // OR assignment operator
+// // //→ assign to a variable if the variable is currently falsy
+// // // 1. set default number of guests for all the restaurant objects that do not have the property
+// // // restaurant1.numGuests = restaurant1.numGuests || 10;
+// // // restaurant2.numGuests = restaurant2.numGuests || 10;
+
+// // // restaurant1.numGuests ||= 10;
+// // // restaurant2.numGuests ||= 10; //variable is falsy, so will be assigned to 10
+// // restaurant1.numGuests ??= 10;
+// // restaurant2.numGuests ??= 10;
+
+// // // restaurant2.owner = restaurant2.owner && '<ANONYMOUS>';
+
+// // restaurant1.owner &&= '<ANONYMOUS>';
+// // restaurant2.owner &&= '<ANONYMOUS>';
+
+// // console.log(restaurant1); // 0
+// // console.log(restaurant2); //10
+
+// // //use non booleans as operands
 // // can use any datatype, return any datatype, do short-circuiting
 
 // // OR
